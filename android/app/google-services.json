@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "741923117783",
+    "project_id": "pocketbuy-a1375",
+    "storage_bucket": "pocketbuy-a1375.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741923117783:android:7dd84be75ab82b42e32e92",
+        "android_client_info": {
+          "package_name": "com.amalpr.pocketbuy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741923117783-du76t0qagdqqb1dph9dfjba4fm9ti8j7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amalpr.pocketbuy",
+            "certificate_hash": "211a247442e3f63e9ba14662019e207f786437d9"
+          }
+        },
+        {
+          "client_id": "741923117783-m171h3d92puhpsqo66ki8qe70i9qotun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdL6UQOpzDZXhPvHKQfldf7v1p0zdwpfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741923117783-m171h3d92puhpsqo66ki8qe70i9qotun.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
