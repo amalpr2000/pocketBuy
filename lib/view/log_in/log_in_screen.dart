@@ -128,8 +128,8 @@ class LoginScreen extends StatelessWidget {
                                 if (success) {
                                   Get.off(() => BottomNavBarWidget());
                                 } else {
-                                  Get.snackbar('Sign in failed',
-                                      'email and password doesn\'t match');
+                                  // Get.snackbar('Sign in failed',
+                                  //     'email and password doesn\'t match');
                                 }
                               });
                             } else {}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/view/home/home_screen.dart';
 import 'package:pocketbuy/view/orders/orders_screen.dart';
@@ -13,6 +14,7 @@ class BottomNavBarWidget extends StatelessWidget {
     super.key,
   });
   BottomNavController bottomNavObj = BottomNavController();
+  // final ConnectivityService connectivityService = Get.find();
   @override
   Widget build(BuildContext context) {
     var displayHeight = MediaQuery.of(context).size.height;

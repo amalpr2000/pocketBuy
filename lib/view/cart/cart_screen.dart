@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
 import 'package:pocketbuy/view/cart/checkout_screen.dart';
+import 'package:pocketbuy/view/cart/widgets/cart_list_tile.dart';
+
+import '../../service/auth/wishlist.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -22,83 +26,32 @@ class CartScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  height: displayHeight * .6,
-                  child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text('Apple iphone 14 Pro'),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '\$129999',
-                                style: TextStyle(color: kPrimaryColor),
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 20,
-                                    width: 20,
-                                    color: Colors.grey[300],
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.minimize_rounded,
-                                          size: 16,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5),
-                                    child: Text(
-                                      '1',
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 20,
-                                    width: 20,
-                                    color: Colors.grey[300],
-                                    child: Icon(
-                                      Icons.add,
-                                      size: 16,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          leading: Container(
-                            height: 70,
-                            width: 70,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image:
-                                        AssetImage('assets/images/14pro.jpg'))),
-                          ),
-                          trailing: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.delete_outline_rounded,
-                                // color: Colors.red,
-                              )),
-                        );
-                      },
-                      separatorBuilder: (context, index) => SizedBox(
-                            height: 15,
-                          ),
-                      itemCount: 3),
-                ),
+                StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('userSide')
+                        .doc('cart')
+                        .collection(currentEmail!)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.data == null) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return SizedBox(
+                        height: displayHeight * .6,
+                        child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              return CartListTile(
+                                productId: snapshot.data!.docs[index].id,
+                                quantity: snapshot.data!.docs[index]
+                                    ['quantity'],
+                              );
+                            },
+                            separatorBuilder: (context, index) => SizedBox(
+                                  height: 15,
+                                ),
+                            itemCount: snapshot.data!.docs.length),
+                      );
+                    }),
                 Container(
                   padding: EdgeInsets.symmetric(
                     vertical: 20,

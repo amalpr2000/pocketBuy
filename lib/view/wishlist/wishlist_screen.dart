@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:get/get.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
+import 'package:pocketbuy/service/auth/wishlist.dart';
 import 'package:pocketbuy/view/cart/cart_screen.dart';
+import 'package:pocketbuy/view/wishlist/widgets/wishlist_tile.dart';
 
 class WishlistScreen extends StatelessWidget {
   const WishlistScreen({super.key});
@@ -54,36 +57,28 @@ class WishlistScreen extends StatelessWidget {
         kHeight10,
         SizedBox(
           height: displayHeight * .6,
-          child: ListView.separated(
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('Apple iphone 14 Pro'),
-                  subtitle: Text(
-                    '\$129999',
-                    style: TextStyle(color: kPrimaryColor),
-                  ),
-                  leading: Container(
-                    height: 70,
-                    width: 70,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage('assets/images/14pro.jpg'))),
-                  ),
-                  trailing: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.favorite_sharp,
-                        color: Colors.red,
-                      )),
-                );
-              },
-              separatorBuilder: (context, index) => SizedBox(
-                    height: 15,
-                  ),
-              itemCount: 3),
+          child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('userSide')
+                  .doc('wishlist')
+                  .collection(currentEmail!)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return ListView.separated(
+                    itemBuilder: (context, index) {
+                      return WishlistTile(
+                          productId: snapshot.data!.docs[index]['productId']);
+                    },
+                    separatorBuilder: (context, index) => SizedBox(
+                          height: 15,
+                        ),
+                    itemCount: snapshot.data!.docs.length);
+              }),
         )
       ],
     ));

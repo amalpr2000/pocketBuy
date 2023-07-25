@@ -1,16 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pocketbuy/controller/cart_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
+import 'package:pocketbuy/service/auth/cart.dart';
+import 'package:pocketbuy/service/auth/wishlist.dart';
+import 'package:pocketbuy/view/cart/cart_screen.dart';
 
 class ProductDetails extends StatefulWidget {
-  ProductDetails({super.key});
+  ProductDetails({super.key, required this.productId});
+  String productId;
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-  int selectedImage = 0;
+  // int quantity = 1;
+  int selectedImage = 1;
+  CartController cartControllerObj = CartController();
   @override
   Widget build(BuildContext context) {
     var displayHeight = MediaQuery.of(context).size.height;
@@ -47,118 +56,289 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: Column(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: AspectRatio(
-                  aspectRatio: 1.5,
-                  child: Hero(
-                    tag: "DemoTag",
-                    child: Image.asset(productimages[selectedImage]),
-                  ),
-                ),
-              ),
-              // SizedBox(height: getProportionateScreenWidth(20)),
-              kHeight10,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ...List.generate(productimages.length,
-                      (index) => buildSmallProductPreview(index)),
-                ],
-              ),
-              kHeight20,
-              Material(
-                elevation: 20,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
-                ),
-                child: Container(
-                  height: displayHeight * 0.445,
-                  // margin: EdgeInsets.only(top: 20),
-                  // padding: EdgeInsets.all(20),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
+          child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('pocketBuy')
+                  .doc('admin')
+                  .collection('products')
+                  .doc(widget.productId)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: AspectRatio(
+                        aspectRatio: 1.5,
+                        child: Hero(
+                          tag: "DemoTag",
+                          child: Image.network(
+                              snapshot.data!['productImg$selectedImage']),
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      kHeight20,
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            'Apple iphone 14 Pro',
-                            style: TextStyle(fontSize: 22),
-                          ),
-                        ],
+                    // SizedBox(height: getProportionateScreenWidth(20)),
+                    kHeight10,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ...List.generate(
+                            3, (index) => buildSmallProductPreview(index)),
+                      ],
+                    ),
+                    kHeight20,
+                    Material(
+                      elevation: 20,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40),
                       ),
-                      Row(
-                        children: [
-                          Spacer(),
-                          Container(
-                            height: 40,
-                            width: 70,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(40),
-                                  bottomLeft: Radius.circular(40)),
-                              color: Colors.grey[200],
-                            ),
-                            child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                )),
-                          ),
-                        ],
-                      ),
-                      kHeight20,
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: SizedBox(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  'The Apple iPhone 14 Pro Max 5G comes with a 6.7-inch ProMotion technology touchscreen, features Crash Detection ...'),
-                              kHeight20,
-                              Text(
-                                '\$129999',
-                                style: TextStyle(
-                                    fontSize: 22, color: kPrimaryColor),
-                              ),
-                              kHeight40,
-                              SizedBox(
-                                  width: double.infinity,
-                                  height: 45,
-                                  child: ElevatedButton(
-                                      // style: ButtonStyle(backgroundColor: Colors.orange),
-                                      onPressed: () {},
-                                      child: const Text(
-                                        'Add to Cart',
-                                        style: TextStyle(color: kwhite),
-                                      ))),
-                            ],
+                      child: Container(
+                        height: displayHeight * 0.445,
+                        // margin: EdgeInsets.only(top: 20),
+                        // padding: EdgeInsets.all(20),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40),
+                            topRight: Radius.circular(40),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            kHeight20,
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  snapshot.data!['productName'],
+                                  style: TextStyle(fontSize: 22),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Spacer(),
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(40),
+                                        bottomLeft: Radius.circular(40)),
+                                    color: Colors.grey[200],
+                                  ),
+                                  child: FutureBuilder(
+                                    future: WishlistService().checkWishlist(
+                                        productid: snapshot.data!.id),
+                                    builder: (context, snapshot1) => IconButton(
+                                        onPressed: () {
+                                          if (snapshot1.data == true) {
+                                            WishlistService().removeWishlist(
+                                                context: context,
+                                                productid: snapshot.data!.id);
+                                          } else {
+                                            WishlistService().addToWishlist(
+                                                context: context,
+                                                productid: snapshot.data!.id);
+                                          }
+                                        },
+                                        icon: snapshot1.data ?? false
+                                            ? Icon(
+                                                Icons.favorite,
+                                                color: Colors.red,
+                                              )
+                                            : Icon(
+                                                Icons.favorite,
+                                                color: Colors.white,
+                                              )),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            kHeight20,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      snapshot.data!['productDescription'],
+                                      maxLines: 6,
+                                    ),
+                                    kHeight20,
+                                    Text(
+                                      '\$${snapshot.data!['productPrice']}',
+                                      style: TextStyle(
+                                          fontSize: 22, color: kPrimaryColor),
+                                    ),
+                                    kHeight40,
+                                    SizedBox(
+                                        width: double.infinity,
+                                        height: 45,
+                                        child: ElevatedButton(
+                                            // style: ButtonStyle(backgroundColor: Colors.orange),
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                  titlePadding: EdgeInsets.only(
+                                                      left: 60,
+                                                      right: 20,
+                                                      top: 20),
+                                                  title: Text(
+                                                      'Select the quantity'),
+                                                  content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Obx(
+                                                        () => Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            InkWell(
+                                                              onTap: () {
+                                                                if (cartControllerObj
+                                                                        .quantity
+                                                                        .value >
+                                                                    1) {
+                                                                  cartControllerObj
+                                                                      .quantity
+                                                                      .value--;
+                                                                }
+                                                              },
+                                                              child: Container(
+                                                                height: 30,
+                                                                width: 30,
+                                                                color: Colors
+                                                                    .grey[300],
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .minimize_rounded,
+                                                                      size: 16,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      15),
+                                                              child: Text(
+                                                                '${cartControllerObj.quantity.value}',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        20),
+                                                              ),
+                                                            ),
+                                                            InkWell(
+                                                              onTap: () {
+                                                                cartControllerObj
+                                                                    .quantity
+                                                                    .value++;
+                                                              },
+                                                              child: Container(
+                                                                height: 30,
+                                                                width: 30,
+                                                                color: Colors
+                                                                    .grey[300],
+                                                                child: Icon(
+                                                                  Icons.add,
+                                                                  size: 16,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      kHeight20,
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceEvenly,
+                                                        children: [
+                                                          ElevatedButton(
+                                                              onPressed: () {
+                                                                Get.back();
+                                                                cartControllerObj
+                                                                    .quantity
+                                                                    .value = 1;
+                                                              },
+                                                              child: Text(
+                                                                  'Cancel')),
+                                                          FutureBuilder(
+                                                            future: CartService()
+                                                                .checkCart(
+                                                                    productid:
+                                                                        snapshot
+                                                                            .data!
+                                                                            .id),
+                                                            builder: (context,
+                                                                    snapshot1) =>
+                                                                ElevatedButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      CartService().addToCart(
+                                                                          context:
+                                                                              context,
+                                                                          productid: snapshot
+                                                                              .data!
+                                                                              .id,
+                                                                          quantity: cartControllerObj
+                                                                              .quantity
+                                                                              .value);
+                                                                      Get.off(
+                                                                          CartScreen());
+                                                                    },
+                                                                    child: Text(
+                                                                        'Continue')),
+                                                          )
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text(
+                                              'Add to Cart',
+                                              style: TextStyle(color: kwhite),
+                                            ))),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              }),
         ));
   }
 
@@ -166,7 +346,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedImage = index;
+          selectedImage = index + 1;
         });
       },
       child: AnimatedContainer(
@@ -179,9 +359,24 @@ class _ProductDetailsState extends State<ProductDetails> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-              color: kPrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
+              color: kPrimaryColor
+                  .withOpacity(selectedImage == index + 1 ? 1 : 0)),
         ),
-        child: Image.asset(productimages[index]),
+        child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('pocketBuy')
+                .doc('admin')
+                .collection('products')
+                .doc(widget.productId)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return Image.network(snapshot.data!['productImg${index + 1}']);
+            }),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
 import 'package:pocketbuy/service/auth/authentication.dart';
+import 'package:pocketbuy/utils/snackbar.dart';
 import 'package:pocketbuy/view/cart/cart_screen.dart';
 import 'package:pocketbuy/view/log_in/log_in_screen.dart';
 import 'package:pocketbuy/view/settings.dart';
@@ -73,17 +74,43 @@ class ProfileScreen extends StatelessWidget {
                       Get.to(() => SettingScreen());
                     }
                     if (index == 2) {
-                      Get.defaultDialog(
-                          title: 'Are you sure?',
-                          content: Text(''),
-                          onConfirm: () async {
-                            await Authentication().signOut();
-                            Get.offAll(() => LoginScreen());
-                          },
-                          onCancel: () {
-                            Get.back();
-                          },
-                          textConfirm: 'Yes');
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          titlePadding:
+                              EdgeInsets.only(left: 90, right: 90, top: 20),
+                          title: Text('Are you Sure ?'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('Do you want to logout'),
+                              kHeight20,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                      child: Text('Cancel')),
+                                  ElevatedButton(
+                                      onPressed: () async {
+                                        Get.back();
+
+                                        await Authentication().signOut();
+                                        snack(context,
+                                            message: 'Logged out Successfully',
+                                            color: Colors.red);
+                                        Get.offAll(() => LoginScreen());
+                                      },
+                                      child: Text('Continue'))
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
                     }
                   },
                   shape: RoundedRectangleBorder(

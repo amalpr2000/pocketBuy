@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/view/log_in/log_in_screen.dart';
+import 'package:pocketbuy/view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
                   color: Color(0XFF8B8B8B),
                   fontSize: 18,
                   fontFamily: 'Sniglet'))),
-      home:  LoginScreen(),
+      home: SplashScreen(),
     );
   }
 }
