@@ -30,7 +30,7 @@ class WishlistTile extends StatelessWidget {
             leading: Container(
               height: 70,
               width: 70,
-              decoration: BoxDecoration(
+              decoration: BoxDecoration( 
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(

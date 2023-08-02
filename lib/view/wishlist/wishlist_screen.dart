@@ -69,6 +69,15 @@ class WishlistScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 }
+                if (snapshot.data!.docs.isEmpty) {
+                  return SizedBox(
+                      height: displayHeight * 0.7,
+                      child: const Center(
+                          child: Text(
+                        'No product in Wishlist',
+                        style: TextStyle(color: kSecondaryColor),
+                      )));
+                }
                 return ListView.separated(
                     itemBuilder: (context, index) {
                       return WishlistTile(

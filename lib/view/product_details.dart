@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:pocketbuy/controller/cart_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
+import 'package:pocketbuy/model/cart_model.dart';
 import 'package:pocketbuy/service/auth/cart.dart';
 import 'package:pocketbuy/service/auth/wishlist.dart';
+import 'package:pocketbuy/view/add_to_cart.dart';
 import 'package:pocketbuy/view/cart/cart_screen.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -19,7 +21,7 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   // int quantity = 1;
   int selectedImage = 1;
-  CartController cartControllerObj = CartController();
+  // CartController cartControllerObj = CartController();
   @override
   Widget build(BuildContext context) {
     var displayHeight = MediaQuery.of(context).size.height;
@@ -179,7 +181,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     ),
                                     kHeight20,
                                     Text(
-                                      '\$${snapshot.data!['productPrice']}',
+                                      '\₹${snapshot.data!['productPrice']}',
                                       style: TextStyle(
                                           fontSize: 22, color: kPrimaryColor),
                                     ),
@@ -190,138 +192,18 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         child: ElevatedButton(
                                             // style: ButtonStyle(backgroundColor: Colors.orange),
                                             onPressed: () {
+                                              var data = snapshot.data!;
                                               showDialog(
                                                 context: context,
-                                                builder: (context) =>
-                                                    AlertDialog(
-                                                  titlePadding: EdgeInsets.only(
-                                                      left: 60,
-                                                      right: 20,
-                                                      top: 20),
-                                                  title: Text(
-                                                      'Select the quantity'),
-                                                  content: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Obx(
-                                                        () => Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            InkWell(
-                                                              onTap: () {
-                                                                if (cartControllerObj
-                                                                        .quantity
-                                                                        .value >
-                                                                    1) {
-                                                                  cartControllerObj
-                                                                      .quantity
-                                                                      .value--;
-                                                                }
-                                                              },
-                                                              child: Container(
-                                                                height: 30,
-                                                                width: 30,
-                                                                color: Colors
-                                                                    .grey[300],
-                                                                child: Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons
-                                                                          .minimize_rounded,
-                                                                      size: 16,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding: const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      15),
-                                                              child: Text(
-                                                                '${cartControllerObj.quantity.value}',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        20),
-                                                              ),
-                                                            ),
-                                                            InkWell(
-                                                              onTap: () {
-                                                                cartControllerObj
-                                                                    .quantity
-                                                                    .value++;
-                                                              },
-                                                              child: Container(
-                                                                height: 30,
-                                                                width: 30,
-                                                                color: Colors
-                                                                    .grey[300],
-                                                                child: Icon(
-                                                                  Icons.add,
-                                                                  size: 16,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      kHeight20,
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        children: [
-                                                          ElevatedButton(
-                                                              onPressed: () {
-                                                                Get.back();
-                                                                cartControllerObj
-                                                                    .quantity
-                                                                    .value = 1;
-                                                              },
-                                                              child: Text(
-                                                                  'Cancel')),
-                                                          FutureBuilder(
-                                                            future: CartService()
-                                                                .checkCart(
-                                                                    productid:
-                                                                        snapshot
-                                                                            .data!
-                                                                            .id),
-                                                            builder: (context,
-                                                                    snapshot1) =>
-                                                                ElevatedButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      CartService().addToCart(
-                                                                          context:
-                                                                              context,
-                                                                          productid: snapshot
-                                                                              .data!
-                                                                              .id,
-                                                                          quantity: cartControllerObj
-                                                                              .quantity
-                                                                              .value);
-                                                                      Get.off(
-                                                                          CartScreen());
-                                                                    },
-                                                                    child: Text(
-                                                                        'Continue')),
-                                                          )
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
+                                                builder: (_) =>
+                                                    AddToCartAlert(
+                                                        productId: data.id,
+                                                        name:
+                                                            data['productName'],
+                                                        imageLink:
+                                                            data['productImg1'],
+                                                        price: data[
+                                                            'productPrice']),
                                               );
                                             },
                                             child: const Text(

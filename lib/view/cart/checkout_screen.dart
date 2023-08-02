@@ -163,7 +163,7 @@ class CheckoutScreen extends StatelessWidget {
                               text: "Total:\n",
                               children: [
                                 TextSpan(
-                                  text: "\$389999",
+                                  text: "₹389999",
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.black),
                                 ),

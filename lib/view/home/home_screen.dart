@@ -1,32 +1,38 @@
-import 'dart:developer';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pocketbuy/controller/cart_controller.dart';
+import 'package:pocketbuy/controller/wishlist_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
 import 'package:pocketbuy/service/auth/wishlist.dart';
 import 'package:pocketbuy/view/brand_page.dart';
 import 'package:pocketbuy/view/cart/cart_screen.dart';
 import 'package:pocketbuy/view/product_details.dart';
+import 'package:pocketbuy/view/search/search.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-
+  final isWishlistObj = Get.put(WishlistController());
+  bool a = false;
   @override
   Widget build(BuildContext context) {
     var displayHeight = MediaQuery.of(context).size.height;
     var displayHWidth = MediaQuery.of(context).size.width;
     Widget buildImage(String urlImage, int index) {
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: 5),
+      return SizedBox(
         height: displayHeight * .15,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            image: DecorationImage(
-                fit: BoxFit.cover, image: NetworkImage(urlImage))),
+        width: displayHWidth * .9,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          height: displayHeight * .15,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              image: DecorationImage(
+                  fit: BoxFit.cover, image: NetworkImage(urlImage))),
+        ),
       );
     }
 
@@ -36,28 +42,58 @@ class HomeScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              SizedBox(
-                height: 50,
-                width: displayHWidth * .7,
-                child: Material(
-                  elevation: 10,
-                  borderRadius: BorderRadius.circular(12),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search_rounded),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.all(20),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide:
-                            const BorderSide(color: Colors.white, width: 0.0),
-                      ),
-                      labelText: 'Try search here',
-                      labelStyle: const TextStyle(color: kSecondaryColor),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)),
+              InkWell(
+                onTap: () {
+                  Get.to(() => SearchScreen());
+                },
+                child: SizedBox(
+                  height: 50,
+                  width: displayHWidth * .7,
+                  child: Material(
+                    elevation: 10,
+                    borderRadius: BorderRadius.circular(12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Icon(
+                          Icons.search_rounded,
+                          color: kSecondaryColor,
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          'Try search here',
+                          style: TextStyle(color: kSecondaryColor),
+                        ),
+                        SizedBox(
+                          width: 30,
+                        )
+                      ],
                     ),
+                    // child: TextFormField(
+                    //   onTap: () {
+                    //     Get.to(SearchScreen());
+                    //   },
+                    //   decoration: InputDecoration(
+                    //     prefixIcon: const Icon(Icons.search_rounded),
+                    //     filled: true,
+                    //     fillColor: Colors.white,
+                    //     contentPadding: const EdgeInsets.all(20),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(12),
+                    //       borderSide:
+                    //           const BorderSide(color: Colors.white, width: 0.0),
+                    //     ),
+                    //     labelText: 'Try search here',
+                    //     labelStyle: const TextStyle(color: kSecondaryColor),
+                    //     border: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(12)),
+                    //   ),
+                    // ),
                   ),
                 ),
               ),
@@ -121,6 +157,8 @@ class HomeScreen extends StatelessWidget {
                     return buildImage(urlImage, index);
                   },
                   options: CarouselOptions(
+                    // enlargeCenterPage: true,
+                    viewportFraction: .98,
                     height: displayHeight * .15,
                     autoPlay: true,
                   ));
@@ -168,6 +206,8 @@ class HomeScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                                 child: Image.network(
                                   snapshot.data!.docs[index]['brandImg'],
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Container(),
                                 ),
                               ),
                             ),
@@ -193,14 +233,15 @@ class HomeScreen extends StatelessWidget {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.data == null) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
                 return GridView.builder(
-                  physics: BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
                   itemCount: snapshot.data!.docs.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20),
@@ -222,9 +263,10 @@ class HomeScreen extends StatelessWidget {
                             ),
                             // margin: EdgeInsets.all(0),
                             // elevation: 5,
-                            // height: 600,
+                            height: 100,
 
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Container(
                                   height: 125,
@@ -239,53 +281,65 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 Text(snapshot.data!.docs[index]['productName']),
                                 Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
                                       '₹ ${snapshot.data!.docs[index]['productPrice']}',
-                                      style: TextStyle(color: kPrimaryColor),
+                                      style:
+                                          const TextStyle(color: kPrimaryColor),
                                     ),
                                     FutureBuilder(
                                         future: WishlistService().checkWishlist(
                                             productid:
                                                 snapshot.data!.docs[index].id),
                                         builder: (context, snapshot1) {
-                                          return InkWell(
-                                            onTap: () {
-                                              if (snapshot1.data == true) {
-                                                WishlistService()
-                                                    .removeWishlist(
-                                                        context: context,
-                                                        productid: snapshot
-                                                            .data!
-                                                            .docs[index]
-                                                            .id);
-                                              } else {
-                                                WishlistService().addToWishlist(
-                                                    context: context,
-                                                    productid: snapshot
-                                                        .data!.docs[index].id);
-                                              }
-                                            },
-                                            child: Container(
-                                                height: 20,
-                                                width: 20,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey[300],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50)),
-                                                child: snapshot1.data ?? false
-                                                    ? Icon(
-                                                        Icons.favorite_rounded,
-                                                        size: 15,
-                                                      )
-                                                    : Icon(
-                                                        Icons
-                                                            .favorite_outline_rounded,
-                                                        size: 15,
-                                                      )),
+                                          return GetBuilder<WishlistController>(
+                                            builder: (controllerobj) => InkWell(
+                                              onTap: () {
+                                                if (snapshot1.data == true) {
+                                                  WishlistService()
+                                                      .removeWishlist(
+                                                          context: context,
+                                                          productid: snapshot
+                                                              .data!
+                                                              .docs[index]
+                                                              .id);
+                                                } else {
+                                                  WishlistService()
+                                                      .addToWishlist(
+                                                          context: context,
+                                                          productid: snapshot
+                                                              .data!
+                                                              .docs[index]
+                                                              .id);
+                                                }
+                                                controllerobj.updateIcon(
+                                                    isContain:
+                                                        !snapshot1.data!);
+                                                a = !snapshot1.data!;
+                                              },
+                                              child: Container(
+                                                  height: 20,
+                                                  width: 20,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey[300],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50)),
+                                                  child: a
+                                                      ? const Icon(
+                                                          Icons
+                                                              .favorite_rounded,
+                                                          size: 15,
+                                                        )
+                                                      : const Icon(
+                                                          Icons
+                                                              .favorite_outline_rounded,
+                                                          size: 15,
+                                                        )),
+                                            ),
                                           );
                                         })
                                   ],

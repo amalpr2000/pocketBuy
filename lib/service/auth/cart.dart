@@ -1,43 +1,49 @@
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:pocketbuy/model/cart_model.dart';
 import 'package:pocketbuy/service/auth/wishlist.dart';
-import 'package:pocketbuy/utils/snackbar.dart';
 
 class CartService {
-  addToCart({required String productid, required int quantity,required BuildContext context}) async {
-    final cartList = FirebaseFirestore.instance
-        .collection('userSide')
-        .doc('cart')
-        .collection(currentEmail!)
-        .doc(productid)
-        .set({'productId': productid, 'quantity': quantity}).then(
-            (value) {
-              snack(context,
-          message: 'Product added to the cart', color: Colors.green);
-            });
+  CartService();
+  addToCart({required CartModel cartItem}) async {
+    try {
+      FirebaseFirestore.instance
+          .collection('userSide')
+          .doc('cart')
+          .collection(currentEmail!)
+          .doc(cartItem.productId)
+          .set(cartItem.toMap(), SetOptions(merge: true)).then((value) {});
+    } on FirebaseException catch (e) {
+      log(e.message ?? '');
+    }
   }
 
-  Future<bool> checkCart({required String productid}) async {
-    final cartList = await FirebaseFirestore.instance
-        .collection('userSide')
-        .doc('cart')
-        .collection(currentEmail!)
-        .doc(productid)
-        .get();
-    return cartList.exists;
+  updateCartItem({
+    required String productId,
+    required int updateQty,required int price
+  }) {
+    try {
+      FirebaseFirestore.instance
+          .collection('userSide')
+          .doc('cart')
+          .collection(currentEmail!)
+          .doc(productId)
+          .set({
+        'quantity': updateQty,
+        'totalPrice': price
+      }, SetOptions(merge: true));
+    } on FirebaseException catch (e) {
+      log(e.message.toString());
+    }
   }
 
-  removeCart({required String productid,required BuildContext context}) async {
-    FirebaseFirestore.instance
+  deleteCartItem({required String productId}) async {
+    await FirebaseFirestore.instance
         .collection('userSide')
         .doc('cart')
         .collection(currentEmail!)
-        .doc(productid)
-        .delete()
-        .then((value) {
-      snack(context,
-          message: 'Product removed from cart', color: Colors.red);
-    });
+        .doc(productId)
+        .delete();
   }
 }

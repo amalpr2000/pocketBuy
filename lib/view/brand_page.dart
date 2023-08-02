@@ -96,7 +96,7 @@ class BrandPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  snapshot.data!.docs[index]['productPrice'],
+                                  '₹${snapshot.data!.docs[index]['productPrice']}',
                                   style: TextStyle(color: kPrimaryColor),
                                 ),
                                 Container(

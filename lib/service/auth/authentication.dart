@@ -12,13 +12,25 @@ class Authentication {
       {required String email, required String password}) async {
     try {
       UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(value.user!.email)
+            .set({
+          'name': value.user?.displayName ?? 'Not added',
+          'email': email,
+          'phone': value.user?.phoneNumber ?? 'Not added',
+          'image': value.user?.photoURL ?? 'Not added',
+        }, SetOptions(merge: true));
+        return value;
+      });
 
       User? user = userCredential.user;
       return true;
     } on FirebaseException catch (e) {
       Get.snackbar('Error during signup', e.message!);
-      print(e);
+
       return false;
     }
   }
@@ -59,7 +71,18 @@ class Authentication {
       );
 
       final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+          await _auth.signInWithCredential(credential).then((value) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(value.user!.email)
+            .set({
+          'name': value.user?.displayName ?? 'Not added',
+          'email': value.user?.email ?? 'Not added',
+          'phone': value.user?.phoneNumber ?? 'Not added',
+          'image': value.user?.photoURL ?? 'Not added',
+        }, SetOptions(merge: true));
+        return value;
+      });
 
       return userCredential;
     } catch (e) {
