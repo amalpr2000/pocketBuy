@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,8 +8,7 @@ import 'package:pocketbuy/model/address_model.dart';
 import 'package:pocketbuy/service/auth/wishlist.dart';
 
 class AddressService {
-  BuildContext context;
-  AddressService({required this.context});
+  AddressService();
   addAddress({required AddressModel address}) async {
     try {
       await FirebaseFirestore. instance.collection('users').doc(currentEmail).collection('address').add({
@@ -19,10 +19,9 @@ class AddressService {
         'pincode': address.pincode,
         'landmark': address.landmark,
       }).then((value) {
-        ScaffoldMessenger.of(context).showSnackBar(_addedSuccess());
       });
     } on FirebaseException catch (e) {
-      _alertshower(e.message);
+      log(e.message.toString());
     }
   }
 
@@ -42,22 +41,5 @@ class AddressService {
         backgroundColor: const Color.fromARGB(122, 0, 0, 0));
   }
 
-  _alertshower(String? e) {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Alert'),
-        content: Text(e ?? ''),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
+
 }

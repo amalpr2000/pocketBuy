@@ -45,18 +45,6 @@ class OrderSuccess extends StatelessWidget {
             child: SizedBox(
               child: Column(
                 children: [
-                  SizedBox(
-                      width: double.infinity,
-                      height: 45,
-                      child: ElevatedButton(
-                          // style: ButtonStyle(backgroundColor: Colors.orange),
-                          onPressed: () {
-                            Get.to(() => BottomNavBarWidget());
-                          },
-                          child: const Text(
-                            'Track Order',
-                            style: TextStyle(color: kwhite),
-                          ))),
                   kHeight20,
                   SizedBox(
                       width: double.infinity,
@@ -64,7 +52,7 @@ class OrderSuccess extends StatelessWidget {
                       child: ElevatedButton(
                           // style: ButtonStyle(backgroundColor: Colors.orange),
                           onPressed: () {
-                            Get.to(() => BottomNavBarWidget());
+                            Get.offAll(() => BottomNavBarWidget());
                           },
                           child: const Text(
                             'Continue Shopping',

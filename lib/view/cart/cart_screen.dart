@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:pocketbuy/controller/cart_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
-import 'package:pocketbuy/view/cart/checkout_screen.dart';
+
 import 'package:pocketbuy/view/cart/widgets/cart_list_tile.dart';
+import 'package:pocketbuy/view/checkout/checkout_screen.dart';
 
 import '../../service/auth/wishlist.dart';
 // final cartControllerObj = CartController();
@@ -217,7 +218,10 @@ class CartScreen extends StatelessWidget {
                                   backgroundColor: kPrimaryColor,
                                 ),
                                 onPressed: () {
-                                  Get.to(() => CheckoutScreen());
+                                  Get.to(() => CheckoutScreen(
+                                        totalPrice: controller.totalCartPrice,
+                                        cartList: controller.cartList,
+                                      ));
                                 },
                                 child: Text(
                                   'Check Out',
