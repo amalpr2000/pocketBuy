@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-class SearchController extends GetxController{
+class SearchProductController extends GetxController{
   final searchController =TextEditingController();
   String text='';
   List<QueryDocumentSnapshot<Object?>> searchList=[];

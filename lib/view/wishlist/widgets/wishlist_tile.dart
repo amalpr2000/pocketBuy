@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/service/auth/wishlist.dart';
+import 'package:pocketbuy/view/home/home_screen.dart';
 
 class WishlistTile extends StatelessWidget {
   const WishlistTile({super.key, required this.productId});
@@ -30,17 +31,15 @@ class WishlistTile extends StatelessWidget {
             leading: Container(
               height: 70,
               width: 70,
-              decoration: BoxDecoration( 
+              decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(snapshot.data!['productImg1']))),
+                      fit: BoxFit.cover, image: NetworkImage(snapshot.data!['productImg1']))),
             ),
             trailing: IconButton(
                 onPressed: () {
-                  WishlistService().removeWishlist(
-                      context: context, productid: snapshot.data!.id);
+                  wishListObj.remove(productId: productId);
                 },
                 icon: Icon(
                   Icons.favorite_sharp,

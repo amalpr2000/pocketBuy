@@ -12,12 +12,15 @@ import 'package:pocketbuy/view/cart/cart_screen.dart';
 import 'package:pocketbuy/view/product_details.dart';
 import 'package:pocketbuy/view/search/search.dart';
 
+WishlistController wishListObj = WishlistController();
+
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   final isWishlistObj = Get.put(WishlistController());
   bool a = false;
   @override
   Widget build(BuildContext context) {
+    wishListObj.getwishlist();
     var displayHeight = MediaQuery.of(context).size.height;
     var displayHWidth = MediaQuery.of(context).size.width;
     Widget buildImage(String urlImage, int index) {
@@ -30,8 +33,7 @@ class HomeScreen extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(
-                  fit: BoxFit.cover, image: NetworkImage(urlImage))),
+              image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(urlImage))),
         ),
       );
     }
@@ -194,20 +196,18 @@ class HomeScreen extends StatelessWidget {
                           elevation: 4,
                           borderRadius: BorderRadius.circular(20),
                           child: InkWell(
-                            onTap: () => Get.to(() => BrandPage(
-                                title: snapshot.data!.docs[index].id)),
+                            onTap: () =>
+                                Get.to(() => BrandPage(title: snapshot.data!.docs[index].id)),
                             child: Container(
                               height: displayHeight * .08,
                               width: displayHeight * .08,
                               decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20)),
+                                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Image.network(
                                   snapshot.data!.docs[index]['brandImg'],
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Container(),
+                                  errorBuilder: (context, error, stackTrace) => Container(),
                                 ),
                               ),
                             ),
@@ -244,7 +244,8 @@ class HomeScreen extends StatelessWidget {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 20,
-                      mainAxisSpacing: 20),
+                      mainAxisSpacing: 20,
+                      mainAxisExtent: 190),
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(left: 5, right: 5),
@@ -253,8 +254,7 @@ class HomeScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                         child: InkWell(
                           onTap: () {
-                            Get.to(() => ProductDetails(
-                                productId: snapshot.data!.docs[index].id));
+                            Get.to(() => ProductDetails(productId: snapshot.data!.docs[index].id));
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -276,72 +276,47 @@ class HomeScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(20),
                                       image: DecorationImage(
                                           fit: BoxFit.cover,
-                                          image: NetworkImage(snapshot.data!
-                                              .docs[index]['productImg1']))),
+                                          image: NetworkImage(
+                                              snapshot.data!.docs[index]['productImg1']))),
                                 ),
                                 Text(snapshot.data!.docs[index]['productName']),
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
                                       '₹ ${snapshot.data!.docs[index]['productPrice']}',
-                                      style:
-                                          const TextStyle(color: kPrimaryColor),
+                                      style: const TextStyle(color: kPrimaryColor),
                                     ),
-                                    FutureBuilder(
-                                        future: WishlistService().checkWishlist(
-                                            productid:
-                                                snapshot.data!.docs[index].id),
-                                        builder: (context, snapshot1) {
-                                          return GetBuilder<WishlistController>(
-                                            builder: (controllerobj) => InkWell(
-                                              onTap: () {
-                                                if (snapshot1.data == true) {
-                                                  WishlistService()
-                                                      .removeWishlist(
-                                                          context: context,
-                                                          productid: snapshot
-                                                              .data!
-                                                              .docs[index]
-                                                              .id);
-                                                } else {
-                                                  WishlistService()
-                                                      .addToWishlist(
-                                                          context: context,
-                                                          productid: snapshot
-                                                              .data!
-                                                              .docs[index]
-                                                              .id);
-                                                }
-                                                controllerobj.updateIcon(
-                                                    isContain:
-                                                        !snapshot1.data!);
-                                                a = !snapshot1.data!;
-                                              },
-                                              child: Container(
-                                                  height: 20,
-                                                  width: 20,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.grey[300],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50)),
-                                                  child: a
-                                                      ? const Icon(
-                                                          Icons
-                                                              .favorite_rounded,
-                                                          size: 15,
-                                                        )
-                                                      : const Icon(
-                                                          Icons
-                                                              .favorite_outline_rounded,
-                                                          size: 15,
-                                                        )),
-                                            ),
-                                          );
-                                        })
+                                    Positioned(
+                                      right: 0,
+                                      child: InkWell(
+                                        onTap: () {
+                                          if (wishListObj.wishlist
+                                              .contains(snapshot.data!.docs[index].id)) {
+                                            wishListObj.remove(
+                                                productId: snapshot.data!.docs[index].id);
+                                          } else {
+                                            wishListObj.add(
+                                                productId: snapshot.data!.docs[index].id);
+                                          }
+                                        },
+                                        child: GetBuilder<WishlistController>(
+                                          init: wishListObj,
+                                          builder: (controller) {
+                                            // wishListObj = controller;
+                                            return Icon(
+                                              wishListObj.wishlist
+                                                      .contains(snapshot.data!.docs[index].id)
+                                                  ? Icons.favorite
+                                                  : Icons.favorite_border,
+                                              size: 28,
+                                              color: Colors.black,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 )
                               ],

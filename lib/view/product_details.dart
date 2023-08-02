@@ -79,8 +79,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         aspectRatio: 1.5,
                         child: Hero(
                           tag: "DemoTag",
-                          child: Image.network(
-                              snapshot.data!['productImg$selectedImage']),
+                          child: Image.network(snapshot.data!['productImg$selectedImage']),
                         ),
                       ),
                     ),
@@ -89,8 +88,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ...List.generate(
-                            3, (index) => buildSmallProductPreview(index)),
+                        ...List.generate(3, (index) => buildSmallProductPreview(index)),
                       ],
                     ),
                     kHeight20,
@@ -139,38 +137,37 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         bottomLeft: Radius.circular(40)),
                                     color: Colors.grey[200],
                                   ),
-                                  child: FutureBuilder(
-                                    future: WishlistService().checkWishlist(
-                                        productid: snapshot.data!.id),
-                                    builder: (context, snapshot1) => IconButton(
-                                        onPressed: () {
-                                          if (snapshot1.data == true) {
-                                            WishlistService().removeWishlist(
-                                                context: context,
-                                                productid: snapshot.data!.id);
-                                          } else {
-                                            WishlistService().addToWishlist(
-                                                context: context,
-                                                productid: snapshot.data!.id);
-                                          }
-                                        },
-                                        icon: snapshot1.data ?? false
-                                            ? Icon(
-                                                Icons.favorite,
-                                                color: Colors.red,
-                                              )
-                                            : Icon(
-                                                Icons.favorite,
-                                                color: Colors.white,
-                                              )),
-                                  ),
+                                  // child: FutureBuilder(
+                                  //   future: WishlistService().checkWishlist(
+                                  //       productid: snapshot.data!.id),
+                                  //   builder: (context, snapshot1) => IconButton(
+                                  //       onPressed: () {
+                                  //         if (snapshot1.data == true) {
+                                  //           WishlistService().removeWishlist(
+                                  //               context: context,
+                                  //               productid: snapshot.data!.id);
+                                  //         } else {
+                                  //           WishlistService().addToWishlist(
+                                  //               context: context,
+                                  //               productid: snapshot.data!.id);
+                                  //         }
+                                  //       },
+                                  //       icon: snapshot1.data ?? false
+                                  //           ? Icon(
+                                  //               Icons.favorite,
+                                  //               color: Colors.red,
+                                  //             )
+                                  //           : Icon(
+                                  //               Icons.favorite,
+                                  //               color: Colors.white,
+                                  //             )),
+                                  // ),
                                 ),
                               ],
                             ),
                             kHeight20,
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
                               child: SizedBox(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,8 +179,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     kHeight20,
                                     Text(
                                       '\₹${snapshot.data!['productPrice']}',
-                                      style: TextStyle(
-                                          fontSize: 22, color: kPrimaryColor),
+                                      style: TextStyle(fontSize: 22, color: kPrimaryColor),
                                     ),
                                     kHeight40,
                                     SizedBox(
@@ -195,15 +191,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                                               var data = snapshot.data!;
                                               showDialog(
                                                 context: context,
-                                                builder: (_) =>
-                                                    AddToCartAlert(
-                                                        productId: data.id,
-                                                        name:
-                                                            data['productName'],
-                                                        imageLink:
-                                                            data['productImg1'],
-                                                        price: data[
-                                                            'productPrice']),
+                                                builder: (_) => AddToCartAlert(
+                                                    productId: data.id,
+                                                    name: data['productName'],
+                                                    imageLink: data['productImg1'],
+                                                    price: data['productPrice']),
                                               );
                                             },
                                             child: const Text(
@@ -240,9 +232,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-              color: kPrimaryColor
-                  .withOpacity(selectedImage == index + 1 ? 1 : 0)),
+          border: Border.all(color: kPrimaryColor.withOpacity(selectedImage == index + 1 ? 1 : 0)),
         ),
         child: StreamBuilder(
             stream: FirebaseFirestore.instance

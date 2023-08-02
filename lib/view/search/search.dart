@@ -7,7 +7,7 @@ import 'package:pocketbuy/view/product_details.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
-  final searchText = SearchController();
+  final searchText = SearchProductController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +50,11 @@ class SearchScreen extends StatelessWidget {
                           contentPadding: const EdgeInsets.all(20),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                                color: Colors.white, width: 0.0),
+                            borderSide: const BorderSide(color: Colors.white, width: 0.0),
                           ),
                           labelText: 'Try search here',
                           labelStyle: const TextStyle(color: kSecondaryColor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                       ),
                     ),
@@ -93,8 +91,7 @@ class SearchNotFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: displayHeight * .5,
-        child: Center(child: Text('No producttttt14 pro found')));
+        height: displayHeight * .5, child: Center(child: Text('No producttttt14 pro found')));
   }
 }
 
@@ -104,7 +101,7 @@ class SearchFound extends StatelessWidget {
     required this.searchText,
   });
 
-  final SearchController searchText;
+  final SearchProductController searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +120,7 @@ class SearchFound extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: InkWell(
               onTap: () {
-                Get.to(() =>
-                    ProductDetails(productId: searchText.searchList[index].id));
+                Get.to(() => ProductDetails(productId: searchText.searchList[index].id));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -146,8 +142,7 @@ class SearchFound extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(searchText.searchList[index]
-                                  ['productImg1']))),
+                              image: NetworkImage(searchText.searchList[index]['productImg1']))),
                     ),
                     Text(searchText.searchList[index]['productName']),
                     Row(
