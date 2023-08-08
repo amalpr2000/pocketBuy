@@ -61,13 +61,11 @@ class LoginScreen extends StatelessWidget {
                           contentPadding: const EdgeInsets.all(20),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                                color: Colors.white, width: 0.0),
+                            borderSide: const BorderSide(color: Colors.white, width: 0.0),
                           ),
                           labelText: 'Enter your email',
                           labelStyle: const TextStyle(color: kSecondaryColor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                           suffixIcon: const Icon(Icons.mail_outline_rounded)),
                     ),
                   ),
@@ -92,32 +90,30 @@ class LoginScreen extends StatelessWidget {
                           contentPadding: const EdgeInsets.all(20),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                                color: Colors.white, width: 0.0),
+                            borderSide: const BorderSide(color: Colors.white, width: 0.0),
                           ),
                           labelText: 'Enter your password',
                           labelStyle: const TextStyle(color: kSecondaryColor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                           suffixIcon: const Icon(Icons.lock_outline_rounded)),
                     ),
                   ),
                   kHeight20,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
-                      Text(
-                        'Forget password?',
-                        style: TextStyle(color: kSecondaryColor),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.end,
+                  //   children: const [
+                  //     Text(
+                  //       'Forget password?',
+                  //       style: TextStyle(color: kSecondaryColor),
+                  //     ),
+                  //   ],
+                  // ),
                   kHeight40,
                   SizedBox(
                       width: double.infinity,
                       height: 45,
                       child: ElevatedButton(
-                          // style: ButtonStyle(backgroundColor: Colors.orange),
+                    
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               Authentication()
@@ -128,8 +124,7 @@ class LoginScreen extends StatelessWidget {
                                 if (success) {
                                   Get.off(() => BottomNavBarWidget());
                                 } else {
-                                  // Get.snackbar('Sign in failed',
-                                  //     'email and password doesn\'t match');
+                            
                                 }
                               });
                             } else {}
@@ -162,8 +157,8 @@ class LoginScreen extends StatelessWidget {
                       InkWell(
                         mouseCursor: SystemMouseCursors.click,
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SignUpScreen()));
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => SignUpScreen()));
                         },
                         child: const Text(
                           "Sign Up",

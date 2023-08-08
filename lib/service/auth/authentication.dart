@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/utils/snackbar.dart';
 
 class Authentication {
@@ -14,10 +15,7 @@ class Authentication {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(value.user!.email)
-            .set({
+        FirebaseFirestore.instance.collection('users').doc(value.user!.email).set({
           'name': value.user?.displayName ?? 'Not added',
           'email': email,
           'phone': value.user?.phoneNumber ?? 'Not added',
@@ -29,21 +27,28 @@ class Authentication {
       User? user = userCredential.user;
       return true;
     } on FirebaseException catch (e) {
-      Get.snackbar('Error during signup', e.message!);
+      customSnackbar(
+          title: 'Error during signup',
+          msg: e.message!,
+          barColor: snackred,
+          position: SnackPosition.TOP);
 
       return false;
     }
   }
 
-  Future<bool> signInWtihEmailAndPassword(
-      {required String email, required String password}) async {
+  Future<bool> signInWtihEmailAndPassword({required String email, required String password}) async {
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCredential =
+          await _auth.signInWithEmailAndPassword(email: email, password: password);
 
       return true;
     } on FirebaseException catch (e) {
-      Get.snackbar('Error during login', e.message!);
+      customSnackbar(
+          title: 'Error during login',
+          msg: e.message!,
+          barColor: snackred,
+          position: SnackPosition.TOP);
       return false;
     }
   }
@@ -52,16 +57,17 @@ class Authentication {
     try {
       await FirebaseAuth.instance.signOut();
     } on FirebaseAuthException catch (e) {
-      Get.snackbar('Error during login', e.message!);
-
-      print('Error during sign-out: $e');
+      customSnackbar(
+          title: 'Error during signout',
+          msg: e.message!,
+          barColor: snackred,
+          position: SnackPosition.TOP);
     }
   }
 
   Future<UserCredential> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleSignInAccount =
-          await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount!.authentication;
 
@@ -72,10 +78,7 @@ class Authentication {
 
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential).then((value) {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(value.user!.email)
-            .set({
+        FirebaseFirestore.instance.collection('users').doc(value.user!.email).set({
           'name': value.user?.displayName ?? 'Not added',
           'email': value.user?.email ?? 'Not added',
           'phone': value.user?.phoneNumber ?? 'Not added',
@@ -86,9 +89,9 @@ class Authentication {
 
       return userCredential;
     } catch (e) {
-      Get.snackbar('Error during login', '$e');
+      customSnackbar(
+          title: 'Error during login', msg: '$e', barColor: snackred, position: SnackPosition.TOP);
 
-      // print('Error signing in with Google: $e');
       return throw e;
     }
   }

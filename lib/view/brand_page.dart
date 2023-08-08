@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pocketbuy/controller/wishlist_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
+import 'package:pocketbuy/view/cart/cart_screen.dart';
+import 'package:pocketbuy/view/home/home_screen.dart';
 
 class BrandPage extends StatelessWidget {
   BrandPage({super.key, required this.title});
@@ -29,7 +33,9 @@ class BrandPage extends StatelessWidget {
                     ),
                     IconButton(
                         padding: const EdgeInsets.only(bottom: 3, right: 5),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(() => CartScreen());
+                        },
                         icon: const Icon(
                           Icons.shopping_cart_checkout_rounded,
                           color: kSecondaryColor,
@@ -62,7 +68,8 @@ class BrandPage extends StatelessWidget {
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 20,
-                    mainAxisSpacing: 20),
+                    mainAxisSpacing: 20,
+                    mainAxisExtent: 180),
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(left: 5, right: 5),
@@ -74,10 +81,6 @@ class BrandPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           color: Colors.white,
                         ),
-                        // margin: EdgeInsets.all(0),
-                        // elevation: 5,
-                        // height: 600,
-
                         child: Column(
                           children: [
                             Container(
@@ -88,30 +91,50 @@ class BrandPage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(20),
                                   image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(snapshot
-                                          .data!.docs[index]['productImg1']))),
+                                      image:
+                                          NetworkImage(snapshot.data!.docs[index]['productImg1']))),
                             ),
-                            Text(snapshot.data!.docs[index]['productName']),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(snapshot.data!.docs[index]['productName']),
+                            ),
                             Row(
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  '₹${snapshot.data!.docs[index]['productPrice']}',
-                                  style: TextStyle(color: kPrimaryColor),
+                                  '₹ ${snapshot.data!.docs[index]['productPrice']}',
+                                  style: const TextStyle(color: kPrimaryColor),
                                 ),
-                                Container(
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: Icon(
-                                    Icons.favorite_outline_rounded,
-                                    size: 15,
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    if (wishListObj.wishlist
+                                        .contains(snapshot.data!.docs[index].id)) {
+                                      wishListObj.remove(productId: snapshot.data!.docs[index].id);
+                                    } else {
+                                      wishListObj.add(productId: snapshot.data!.docs[index].id);
+                                    }
+                                  },
+                                  child: GetBuilder<WishlistController>(
+                                    init: wishListObj,
+                                    builder: (controller) {
+                                      wishListObj = controller;
+                                      return Icon(
+                                        wishListObj.wishlist.contains(snapshot.data!.docs[index].id)
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        size: 28,
+                                        color: Colors.red,
+                                      );
+                                    },
                                   ),
+                                ),
+                                SizedBox(
+                                  width: 5,
                                 )
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),

@@ -6,21 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/model/address_model.dart';
 import 'package:pocketbuy/service/auth/wishlist.dart';
+import 'package:pocketbuy/utils/snackbar.dart';
 
 class AddressService {
   AddressService();
   addAddress({required AddressModel address}) async {
     try {
-      await FirebaseFirestore. instance.collection('users').doc(currentEmail).collection('address').add({
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentEmail)
+          .collection('address')
+          .add({
         'localAddress': address.localAddress,
         'city': address.city,
         'district': address.district,
         'state': address.state,
         'pincode': address.pincode,
         'landmark': address.landmark,
-      }).then((value) {
-      });
+      }).then((value) {});
     } on FirebaseException catch (e) {
+      customSnackbar(
+          title: 'Error', msg: '${e.message}', barColor: snackred);
       log(e.message.toString());
     }
   }
@@ -40,6 +46,4 @@ class AddressService {
         ),
         backgroundColor: const Color.fromARGB(122, 0, 0, 0));
   }
-
-
 }

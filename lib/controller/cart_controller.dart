@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/model/cart_model.dart';
 import 'package:pocketbuy/service/auth/cart.dart';
 import 'package:pocketbuy/service/auth/wishlist.dart';
+import 'package:pocketbuy/utils/snackbar.dart';
 
 class CartController extends GetxController {
   //Cart list
@@ -38,10 +40,8 @@ class CartController extends GetxController {
     data.totalprice = data.totalprice! + data.price!;
     totalCartPrice += data.price!;
     update();
-    CartService().updateCartItem(
-        productId: data.productId!,
-        updateQty: data.quantity!,
-        price: data.price!);
+    CartService()
+        .updateCartItem(productId: data.productId!, updateQty: data.quantity!, price: data.price!);
   }
 
   // cart product quantity decreasing
@@ -53,9 +53,7 @@ class CartController extends GetxController {
       totalCartPrice -= data.price!;
       update();
       CartService().updateCartItem(
-          productId: data.productId!,
-          updateQty: data.quantity!,
-          price: data.price!);
+          productId: data.productId!, updateQty: data.quantity!, price: data.price!);
     }
   }
 
@@ -65,6 +63,8 @@ class CartController extends GetxController {
     CartService().deleteCartItem(productId: data.productId!);
     totalCartPrice -= cartList[index].totalprice!;
     cartList.removeAt(index);
+
     update();
+    
   }
 }

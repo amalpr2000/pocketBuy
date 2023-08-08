@@ -31,8 +31,7 @@ class AddressAdding extends StatelessWidget {
           padding: MediaQuery.of(context).viewInsets,
           child: Padding(
             padding: EdgeInsets.symmetric(
-                vertical: displayHeight * 0.03,
-                horizontal: displayWidth * 0.02),
+                vertical: displayHeight * 0.03, horizontal: displayWidth * 0.02),
             child: SingleChildScrollView(
               child: Form(
                 key: formkey,
@@ -41,8 +40,7 @@ class AddressAdding extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.add_location_alt_outlined,
-                            color: kwhite),
+                        const Icon(Icons.add_location_alt_outlined, color: kwhite),
                         Text(
                           'ADD ADDRESS',
                         ),
@@ -103,8 +101,7 @@ class AddressAdding extends StatelessWidget {
       required TextInputType keyboardtype,
       bool isOptional = false}) {
     return TextFormField(
-      validator: (value) =>
-          Validation().addressValidation(isOptional: isOptional, value: value),
+      validator: (value) => Validation().addressValidation(isOptional: isOptional, value: value),
       controller: controller,
       decoration: InputDecoration(
           fillColor: kwhite,
@@ -112,24 +109,23 @@ class AddressAdding extends StatelessWidget {
           hintText: hint,
           hintStyle: TextStyle(color: Colors.grey),
           prefixIcon: const Icon(Icons.not_listed_location_rounded),
-          prefixIconColor: Colors.black,
+          prefixIconColor: kPrimaryColor,
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
               borderSide: const BorderSide(
-                color: Colors.black,
+                color: kPrimaryColor,
               )),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
               borderSide: const BorderSide(
-                color: Colors.black,
+                color: kSecondaryColor,
               ))),
       keyboardType: keyboardtype,
     );
   }
 
   Widget addAddressButton(
-      {required BuildContext context,
-      required AddressTextController controller}) {
+      {required BuildContext context, required AddressTextController controller}) {
     var displayHeight = MediaQuery.of(context).size.height;
     var displayWidth = MediaQuery.of(context).size.width;
     return Center(
@@ -142,12 +138,12 @@ class AddressAdding extends StatelessWidget {
             }
           },
           style: ButtonStyle(
-              fixedSize: MaterialStatePropertyAll(
-                  Size(displayWidth * 0.5, displayHeight * 0.01)),
-              backgroundColor: const MaterialStatePropertyAll(Colors.white),
-              foregroundColor: const MaterialStatePropertyAll(Colors.black),
-              shape:
-                  const MaterialStatePropertyAll(ContinuousRectangleBorder())),
+              fixedSize: MaterialStatePropertyAll(Size(displayWidth * 0.5, displayHeight * 0.01)),
+              backgroundColor: const MaterialStatePropertyAll(kPrimaryColor),
+              foregroundColor: const MaterialStatePropertyAll(Colors.white),
+              shape: const MaterialStatePropertyAll(ContinuousRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ))),
           child: Text(
             'ADD ADDRESS',
           )),

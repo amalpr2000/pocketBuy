@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pocketbuy/controller/cart_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
+import 'package:pocketbuy/utils/snackbar.dart';
 
 import 'package:pocketbuy/view/cart/widgets/cart_list_tile.dart';
 import 'package:pocketbuy/view/checkout/checkout_screen.dart';
@@ -60,16 +61,13 @@ class CartScreen extends StatelessWidget {
                                       width: 20,
                                       color: Colors.grey[300],
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           InkWell(
                                             onTap: () {
                                               controller.productQtyDec(
-                                                  index: index,
-                                                  context: context);
+                                                  index: index, context: context);
                                             },
                                             child: Icon(
                                               Icons.minimize_rounded,
@@ -80,8 +78,7 @@ class CartScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 5),
+                                      padding: const EdgeInsets.symmetric(horizontal: 5),
                                       child: Text(
                                         '${controller.cartList[index].quantity}',
                                         style: TextStyle(fontSize: 20),
@@ -89,8 +86,7 @@ class CartScreen extends StatelessWidget {
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        controller.productQtyInc(
-                                            index: index, context: context);
+                                        controller.productQtyInc(index: index, context: context);
                                       },
                                       child: Container(
                                         height: 20,
@@ -122,18 +118,15 @@ class CartScreen extends StatelessWidget {
                                   showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
-                                      titlePadding: EdgeInsets.only(
-                                          left: 90, right: 90, top: 20),
+                                      titlePadding: EdgeInsets.only(left: 90, right: 90, top: 20),
                                       title: Text('Are you Sure ?'),
                                       content: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text(
-                                              'This will delete the product from cart'),
+                                          Text('This will delete the product from cart'),
                                           kHeight20,
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
                                               ElevatedButton(
                                                   onPressed: () {
@@ -142,9 +135,12 @@ class CartScreen extends StatelessWidget {
                                                   child: Text('Cancel')),
                                               ElevatedButton(
                                                   onPressed: () {
-                                                    controller.productDelete(
-                                                        index: index);
+                                                    controller.productDelete(index: index);
                                                     Get.back();
+                                                    customSnackbar(
+                                                        title: 'Successfully removed',
+                                                        msg: 'Product removed from cart',
+                                                        barColor: snackred);
                                                   },
                                                   child: Text('Continue'))
                                             ],
@@ -199,8 +195,7 @@ class CartScreen extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: "\₹${controller.totalCartPrice}",
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.black),
+                                style: TextStyle(fontSize: 16, color: Colors.black),
                               ),
                             ],
                           ),

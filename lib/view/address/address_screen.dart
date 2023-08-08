@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pocketbuy/controller/address_screen_controller.dart';
+import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/model/address_model.dart';
 import 'package:pocketbuy/view/address/widgets/address_adding.dart';
 import 'package:pocketbuy/view/checkout/checkout_screen.dart';
 
 class AddressScrn extends StatelessWidget {
   AddressScrn({super.key});
-  static const routename = '/Address';
+
   final AddressScrnController addressScrnController = AddressScrnController();
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,11 @@ class AddressScrn extends StatelessWidget {
     addressScrnController.getAddressList();
 
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 80,
+        title: const Text('Address'),
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           Expanded(
@@ -24,15 +30,13 @@ class AddressScrn extends StatelessWidget {
                 builder: (controller) {
                   bool isListempty = controller.addressList.isEmpty;
 
-                  return isListempty
-                      ? addressListIsEmpty()
-                      : addressListBuilder(context: context);
+                  return isListempty ? addressListIsEmpty() : addressListBuilder(context: context);
                 }),
           ),
           SizedBox(
             height: displayHeight * 0.08,
             child: ColoredBox(
-              color: Colors.black,
+              color: Colors.white,
               child: Center(
                   child: ElevatedButton(
                       onPressed: () {
@@ -41,12 +45,11 @@ class AddressScrn extends StatelessWidget {
                       style: ButtonStyle(
                           fixedSize: MaterialStatePropertyAll(
                               Size(displayWidth * 0.6, displayHeight * 0.01)),
-                          backgroundColor:
-                              const MaterialStatePropertyAll(Colors.white),
-                          foregroundColor:
-                              const MaterialStatePropertyAll(Colors.black),
-                          shape: const MaterialStatePropertyAll(
-                              ContinuousRectangleBorder())),
+                          backgroundColor: const MaterialStatePropertyAll(kPrimaryColor),
+                          foregroundColor: const MaterialStatePropertyAll(Colors.white),
+                          shape: const MaterialStatePropertyAll(ContinuousRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ))),
                       child: const Text(
                         'ADD ADDRESS',
                       ))),
@@ -73,37 +76,32 @@ class AddressScrn extends StatelessWidget {
         child: InkWell(
           onTap: () => addressScrnController.changeSelected(newindex: index),
           child: addressCard(
-              isSelected: selectedIndex == index,
-              address: addresslist[index],
-              context: context),
+              isSelected: selectedIndex == index, address: addresslist[index], context: context),
         ),
       ),
     );
   }
 
   Widget addressCard(
-      {required bool isSelected,
-      required AddressModel address,
-      required BuildContext context}) {
+      {required bool isSelected, required AddressModel address, required BuildContext context}) {
     var displayHeight = MediaQuery.of(context).size.height;
     var displayWidth = MediaQuery.of(context).size.width;
     return Card(
       elevation: 4,
-      color: Colors.blue[100],
+      color: Colors.grey[100],
       child: SizedBox(
         height: displayHeight * 0.15,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Container(
-              decoration:
-                  BoxDecoration(border: Border.all(), shape: BoxShape.circle),
+              decoration: BoxDecoration(border: Border.all(), shape: BoxShape.circle),
               width: displayWidth * 0.08,
               child: Center(
                 child: Container(
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: isSelected ? Colors.black : Colors.transparent),
+                      color: isSelected ? kPrimaryColor : Colors.transparent),
                   width: displayWidth * 0.05,
                 ),
               ),
@@ -139,20 +137,18 @@ class AddressScrn extends StatelessWidget {
 
   Widget addressListIsEmpty() {
     return Center(
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        // Lottie.asset('assets/lotties/AddressEmpty.json'),
-        const Text('Address list is empty')
-      ]),
+      child:
+          Column(mainAxisSize: MainAxisSize.min, children: [const Text('Address list is empty')]),
     );
   }
 
   void _addAddress(BuildContext context) {
     showModalBottomSheet(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         useSafeArea: true,
         context: context,
-        // constraints: BoxConstraints(minWidth: displayWidth),
         isScrollControlled: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         builder: (_) {
           return AddressAdding(
             addressScrnController: addressScrnController,

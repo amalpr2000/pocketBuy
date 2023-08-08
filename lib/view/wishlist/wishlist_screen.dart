@@ -1,12 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:pocketbuy/controller/wishlist_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
-import 'package:pocketbuy/service/auth/wishlist.dart';
+
 import 'package:pocketbuy/view/cart/cart_screen.dart';
 import 'package:pocketbuy/view/home/home_screen.dart';
 import 'package:pocketbuy/view/wishlist/widgets/wishlist_tile.dart';
@@ -56,17 +54,22 @@ class WishlistScreen extends StatelessWidget {
             ],
           ),
           kHeight10,
-          SizedBox(
-            height: displayHeight * .6,
-            child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return WishlistTile(productId: controller.wishlist[index]);
-                },
-                separatorBuilder: (context, index) => SizedBox(
-                      height: 15,
-                    ),
-                itemCount: controller.wishlist.length),
-          )
+          controller.wishlist.isEmpty
+              ? SizedBox(
+                  height: displayHeight * .5,
+                  child: Center(child: Text('Wishlist is empty')),
+                )
+              : SizedBox(
+                  height: displayHeight * .6,
+                  child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        return WishlistTile(productId: controller.wishlist[index]);
+                      },
+                      separatorBuilder: (context, index) => SizedBox(
+                            height: 15,
+                          ),
+                      itemCount: controller.wishlist.length),
+                )
         ],
       ),
     ));

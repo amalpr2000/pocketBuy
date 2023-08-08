@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
 import 'package:pocketbuy/service/auth/authentication.dart';
+import 'package:pocketbuy/service/auth/wishlist.dart';
 import 'package:pocketbuy/utils/snackbar.dart';
 import 'package:pocketbuy/view/cart/cart_screen.dart';
 import 'package:pocketbuy/view/log_in/log_in_screen.dart';
-import 'package:pocketbuy/view/settings.dart';
+import 'package:pocketbuy/view/my_account/my_account.dart';
+import 'package:pocketbuy/view/settings/settings.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -29,10 +31,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             Text(
               'Profile',
-              style: TextStyle(
-                  color: Color(0XFF8B8B8B),
-                  fontSize: 18,
-                  fontFamily: 'Sniglet'),
+              style: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18, fontFamily: 'Sniglet'),
             ),
             Spacer(),
             Stack(
@@ -60,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
         ),
         kHeight10,
         Text(
-          'Hey! Jithin',
+          currentEmail!,
           style: TextStyle(fontSize: 22, color: kSecondaryColor),
         ),
         kHeight20,
@@ -70,6 +69,9 @@ class ProfileScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ListTile(
                   onTap: () {
+                    if (index == 0) {
+                      Get.to(() => MyAccount());
+                    }
                     if (index == 1) {
                       Get.to(() => SettingScreen());
                     }
@@ -77,8 +79,7 @@ class ProfileScreen extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          titlePadding:
-                              EdgeInsets.only(left: 90, right: 90, top: 20),
+                          titlePadding: EdgeInsets.only(left: 90, right: 90, top: 20),
                           title: Text('Are you Sure ?'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -86,8 +87,7 @@ class ProfileScreen extends StatelessWidget {
                               Text('Do you want to logout'),
                               kHeight20,
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   ElevatedButton(
                                       onPressed: () {
@@ -99,9 +99,11 @@ class ProfileScreen extends StatelessWidget {
                                         Get.back();
 
                                         await Authentication().signOut();
-                                        snack(context,
-                                            message: 'Logged out Successfully',
-                                            color: Colors.red);
+
+                                        customSnackbar(
+                                            title: 'Logout',
+                                            msg: 'Logged out Successfully',
+                                            barColor: snackred);
                                         Get.offAll(() => LoginScreen());
                                       },
                                       child: Text('Continue'))
@@ -113,8 +115,7 @@ class ProfileScreen extends StatelessWidget {
                       );
                     }
                   },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   tileColor: Colors.grey[100],
                   title: Text(menuTitle[index]),
                   leading: Icon(

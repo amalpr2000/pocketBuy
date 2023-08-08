@@ -15,85 +15,87 @@ class OrderDetails extends StatelessWidget {
     var displayHeight = MediaQuery.of(context).size.height;
     var displayWidth = MediaQuery.of(context).size.width;
 
-    return SafeArea(
-        child: Scaffold(
-      body: ListView(
-        padding: EdgeInsets.all(displayWidth * 0.05),
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.shopping_cart_outlined),
-              Text('ITEMS', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            ],
-          ),
-          sizedboxwithheight(displayHeight * 0.008),
-          ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: orderDetails.cartlist!.length,
-            itemBuilder: (context, index) => CheckoutItemTile(data: orderDetails.cartlist![index]),
-            separatorBuilder: (context, index) => const Divider(),
-          ),
-          sizedboxwithheight(displayHeight * 0.05),
-          Text(
-            'Order ID: $orderId',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          sizedboxwithheight(displayHeight * 0.008),
-          Text(
-            'Total Price: ${orderDetails.totalPrice}',
-          ),
-          sizedboxwithheight(displayHeight * 0.008),
-          Text(
-            'Payment Method: $payment',
-          ),
-          sizedboxwithheight(displayHeight * 0.008),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Delivering Address :',
-              ),
-              SizedBox(
-                width: displayWidth * 0.5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${orderDetails.address!.localAddress},',
-                    ),
-                    Text(
-                      '${orderDetails.address!.city},${orderDetails.address!.district},',
-                    ),
-                    Text(
-                      '${orderDetails.address!.state},',
-                    ),
-                    Text(
-                      'Pin:${orderDetails.address!.pincode}',
-                    ),
-                    orderDetails.address!.landmark != 'no landmark'
-                        ? Text(
-                            'landmark:${orderDetails.address!.landmark}',
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        : const SizedBox(),
-                  ],
+    return Scaffold(
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.all(displayWidth * 0.05),
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.shopping_cart_outlined),
+                Text('ITEMS', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ],
+            ),
+            sizedboxwithheight(displayHeight * 0.008),
+            ListView.separated(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: orderDetails.cartlist!.length,
+              itemBuilder: (context, index) =>
+                  CheckoutItemTile(data: orderDetails.cartlist![index]),
+              separatorBuilder: (context, index) => const Divider(),
+            ),
+            sizedboxwithheight(displayHeight * 0.05),
+            Text(
+              'Order ID: $orderId',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            sizedboxwithheight(displayHeight * 0.008),
+            Text(
+              'Total Price: ${orderDetails.totalPrice}',
+            ),
+            sizedboxwithheight(displayHeight * 0.008),
+            Text(
+              'Payment Method: $payment',
+            ),
+            sizedboxwithheight(displayHeight * 0.008),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Delivering Address :',
                 ),
-              )
-            ],
-          ),
-          sizedboxwithheight(displayHeight * 0.05),
-          OrderTrackerZen(
-              tracker_data: tracker(
-                  status: orderDetails.orderStatus!,
-                  orderdate: orderDetails.orderPlacedDate,
-                  shippedDate: orderDetails.shippingDate,
-                  outForDeliveryDate: orderDetails.outForDeliveryDate,
-                  deliveryDate: orderDetails.deliveryDate))
-        ],
+                SizedBox(
+                  width: displayWidth * 0.5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${orderDetails.address!.localAddress},',
+                      ),
+                      Text(
+                        '${orderDetails.address!.city},${orderDetails.address!.district},',
+                      ),
+                      Text(
+                        '${orderDetails.address!.state},',
+                      ),
+                      Text(
+                        'Pin:${orderDetails.address!.pincode}',
+                      ),
+                      orderDetails.address!.landmark != 'no landmark'
+                          ? Text(
+                              'landmark:${orderDetails.address!.landmark}',
+                              overflow: TextOverflow.ellipsis,
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            sizedboxwithheight(displayHeight * 0.05),
+            OrderTrackerZen(
+                tracker_data: tracker(
+                    status: orderDetails.orderStatus!,
+                    orderdate: orderDetails.orderPlacedDate,
+                    shippedDate: orderDetails.shippingDate,
+                    outForDeliveryDate: orderDetails.outForDeliveryDate,
+                    deliveryDate: orderDetails.deliveryDate))
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   List<TrackerData> tracker(

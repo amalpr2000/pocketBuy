@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbuy/core/colors.dart';
+import 'package:pocketbuy/view/settings/widgets/on_tap_widget.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -17,9 +18,10 @@ class SettingScreen extends StatelessWidget {
         child: ListView.separated(
             itemBuilder: (context, index) {
               return ListTile(
-                onTap: () {},
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                onTap: () {
+                  settingsOntap(index: index, context: context);
+                },
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 tileColor: Colors.grey[100],
                 title: Text(menuTitle[index]),
                 leading: Icon(
@@ -44,12 +46,7 @@ class SettingScreen extends StatelessWidget {
   }
 }
 
-List menuTitle = [
-  'About',
-  'Invite Friends',
-  'Privacy Policy',
-  'Terms and Conditions'
-];
+List menuTitle = ['About', 'Invite Friends', 'Privacy Policy', 'Terms and Conditions'];
 List menuIcon = [
   Icons.info_rounded,
   Icons.share,

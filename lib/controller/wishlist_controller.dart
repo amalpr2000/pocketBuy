@@ -3,13 +3,7 @@ import 'package:get/get.dart';
 import 'package:pocketbuy/service/auth/wishlist.dart';
 
 class WishlistController extends GetxController {
-  // bool isWishlistUpdated = true;
-
-  // updateIcon({required bool isContain}) {
-  //   isWishlistUpdated = isContain;
-  //   update();
-  //   log('whislist called');
-  // }
+ 
   List<String> wishlist = [];
 
   add({required String productId}) {

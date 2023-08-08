@@ -10,6 +10,7 @@ class OrderServices {
   OrderServices(this._orderData);
   addOrder() async {
     try {
+      String date = DateTime.now().toString();
       await FirebaseFirestore.instance
           .collection('order')
           .add(_orderData.toMap())
@@ -19,8 +20,11 @@ class OrderServices {
             .doc(currentEmail)
             .collection('orderdata')
             .doc(value.id)
-            .set({'value.id': value.id, 'orderStatus': 'Order Placed'}).then(
-                (value) {
+            .set({
+          'value.id': value.id,
+          'orderStatus': 'Order Placed',
+          'orderPlacedDate': date
+        }).then((value) {
           Get.to(() => OrderSuccess());
         });
       });

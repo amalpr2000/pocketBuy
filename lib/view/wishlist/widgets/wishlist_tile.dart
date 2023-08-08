@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbuy/core/colors.dart';
-import 'package:pocketbuy/service/auth/wishlist.dart';
 import 'package:pocketbuy/view/home/home_screen.dart';
 
 class WishlistTile extends StatelessWidget {
@@ -23,9 +22,11 @@ class WishlistTile extends StatelessWidget {
             );
           }
           return ListTile(
+            tileColor: Colors.grey[100],
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             title: Text(snapshot.data?['productName']),
             subtitle: Text(
-              '\$${snapshot.data!['productPrice']}',
+              '₹${snapshot.data!['productPrice']}',
               style: TextStyle(color: kPrimaryColor),
             ),
             leading: Container(

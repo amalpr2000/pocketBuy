@@ -19,4 +19,6 @@ const MaterialColor kPrimaryColor = MaterialColor(
 
 const kSecondaryColor = Color(0XFF8B8B8B);
 const kwhite = Colors.white;
+final snackGreen = Colors.green[400]!;
+final snackred = Colors.red[400]!;
 const Color inActiveIconColor = Color(0xFFB6B6B6);

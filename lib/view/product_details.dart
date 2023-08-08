@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pocketbuy/controller/cart_controller.dart';
+import 'package:pocketbuy/controller/wishlist_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
 import 'package:pocketbuy/model/cart_model.dart';
@@ -9,6 +10,7 @@ import 'package:pocketbuy/service/auth/cart.dart';
 import 'package:pocketbuy/service/auth/wishlist.dart';
 import 'package:pocketbuy/view/add_to_cart.dart';
 import 'package:pocketbuy/view/cart/cart_screen.dart';
+import 'package:pocketbuy/view/home/home_screen.dart';
 
 class ProductDetails extends StatefulWidget {
   ProductDetails({super.key, required this.productId});
@@ -42,7 +44,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     IconButton(
                         padding: const EdgeInsets.only(bottom: 3, right: 5),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(() => CartScreen());
+                        },
                         icon: const Icon(
                           Icons.shopping_cart_checkout_rounded,
                           color: kSecondaryColor,
@@ -83,7 +87,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                       ),
                     ),
-                    // SizedBox(height: getProportionateScreenWidth(20)),
+                   
                     kHeight10,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -100,8 +104,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       child: Container(
                         height: displayHeight * 0.445,
-                        // margin: EdgeInsets.only(top: 20),
-                        // padding: EdgeInsets.all(20),
+                    
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -137,31 +140,28 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         bottomLeft: Radius.circular(40)),
                                     color: Colors.grey[200],
                                   ),
-                                  // child: FutureBuilder(
-                                  //   future: WishlistService().checkWishlist(
-                                  //       productid: snapshot.data!.id),
-                                  //   builder: (context, snapshot1) => IconButton(
-                                  //       onPressed: () {
-                                  //         if (snapshot1.data == true) {
-                                  //           WishlistService().removeWishlist(
-                                  //               context: context,
-                                  //               productid: snapshot.data!.id);
-                                  //         } else {
-                                  //           WishlistService().addToWishlist(
-                                  //               context: context,
-                                  //               productid: snapshot.data!.id);
-                                  //         }
-                                  //       },
-                                  //       icon: snapshot1.data ?? false
-                                  //           ? Icon(
-                                  //               Icons.favorite,
-                                  //               color: Colors.red,
-                                  //             )
-                                  //           : Icon(
-                                  //               Icons.favorite,
-                                  //               color: Colors.white,
-                                  //             )),
-                                  // ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      if (wishListObj.wishlist.contains(widget.productId)) {
+                                        wishListObj.remove(productId: widget.productId);
+                                      } else {
+                                        wishListObj.add(productId: widget.productId);
+                                      }
+                                    },
+                                    child: GetBuilder<WishlistController>(
+                                      init: wishListObj,
+                                      builder: (controller) {
+                                        wishListObj = controller;
+                                        return Icon(
+                                          wishListObj.wishlist.contains(widget.productId)
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          size: 28,
+                                          color: Colors.red,
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),

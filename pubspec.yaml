@@ -47,6 +47,7 @@ dependencies:
   uuid: ^3.0.7
   order_tracker_zen: ^1.0.0+4
   
+  
 
 dev_dependencies:
   flutter_test:
@@ -58,7 +59,13 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-
+  flutter_launcher_icons: ^0.13.1
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/play_store_512.png"
+  adaptive_icon_background: "#E25E34"
+  adaptive_icon_foreground: "assets/images/play_store_512.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

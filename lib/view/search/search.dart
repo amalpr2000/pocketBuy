@@ -90,8 +90,7 @@ class SearchNotFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: displayHeight * .5, child: Center(child: Text('No producttttt14 pro found')));
+    return SizedBox(height: displayHeight * .5, child: Center(child: Text('No product found')));
   }
 }
 

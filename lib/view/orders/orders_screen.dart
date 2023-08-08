@@ -54,52 +54,59 @@ class OrdersScreen extends StatelessWidget {
                 kHeight10,
                 SizedBox(
                   height: displayHeight * .6,
-                  child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        var streamMaker = FirebaseFirestore.instance
-                            .collection('order')
-                            .doc(controller.orderIdlist[index])
-                            .snapshots();
-                        return StreamBuilder(
-                            stream: streamMaker,
-                            builder: (context, snapshot) {
-                              if (snapshot.data == null) {
-                                return const Center(
-                                  child: Text('data not found'),
-                                );
-                              }
-                              OrderModel orderData = OrderModel.fromMap(snapshot.data);
-                              String imagePath = orderData.cartlist!.length > 1
-                                  ? constimage
-                                  : orderData.cartlist![0].imageLink!;
-                              return ListTile(
-                                onTap: () => Get.to(() => OrderDetails(
-                                    orderDetails: orderData, orderId: snapshot.data!.id)),
-                                tileColor: Colors.grey[100],
-                                title: Text('Order id: ${snapshot.data!.id}'),
-                                subtitle: Text(orderData.orderStatus!,
-                                    style: const TextStyle(color: kPrimaryColor)),
-                                leading: Container(
-                                  height: 70,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                      fit: BoxFit.fitHeight,
-                                      image: NetworkImage(imagePath),
+                  child: controller.orderIdlist.isEmpty
+                      ? Center(child: Text('No order placed'))
+                      : ListView.separated(
+                          itemBuilder: (context, index) {
+                            var streamMaker = FirebaseFirestore.instance
+                                .collection('order')
+                                .doc(controller.orderIdlist[index])
+                                .snapshots();
+                            return StreamBuilder(
+                                stream: streamMaker,
+                                builder: (context, snapshot) {
+                                  if (snapshot.data == null) {
+                                    return const Center(
+                                      child: Text('data not found'),
+                                    );
+                                  }
+                                  OrderModel orderData = OrderModel.fromMap(snapshot.data);
+                                  String imagePath = orderData.cartlist!.length > 1
+                                      ? constimage
+                                      : orderData.cartlist![0].imageLink!;
+                                  return ListTile(
+                                    tileColor: Colors.grey[100],
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12)),
+                                    onTap: () => Get.to(() => OrderDetails(
+                                        orderDetails: orderData, orderId: snapshot.data!.id)),
+                                    title: Text(
+                                      'Order id: ${snapshot.data!.id}',
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                ),
-                                trailing: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.arrow_forward_ios,
-                                        color: kSecondaryColor)),
-                              );
-                            });
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(height: 15),
-                      itemCount: controller.orderIdlist.length),
+                                    subtitle: Text(orderData.orderStatus!,
+                                        style: const TextStyle(color: kPrimaryColor)),
+                                    leading: Container(
+                                      height: 70,
+                                      width: 70,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                          fit: BoxFit.fitHeight,
+                                          image: NetworkImage(imagePath),
+                                        ),
+                                      ),
+                                    ),
+                                    trailing: IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.arrow_forward_ios,
+                                            color: kSecondaryColor)),
+                                  );
+                                });
+                          },
+                          separatorBuilder: (context, index) => const SizedBox(height: 15),
+                          itemCount: controller.orderIdlist.length),
                 )
               ],
             ),

@@ -35,7 +35,7 @@ class CheckoutScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              
               children: [
                 kHeight20,
                 Text('Select delievery Address'),
@@ -73,7 +73,7 @@ class CheckoutScreen extends StatelessWidget {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border.all(color: kPrimaryColor),
+                        border: Border.all(color: kSecondaryColor),
                         borderRadius: BorderRadius.circular(8)),
                     child: GetBuilder<CheckoutAddControl>(
                         init: checkoutAddControl,
@@ -134,8 +134,7 @@ class CheckoutScreen extends StatelessWidget {
                             value: 1,
                             child: Image.network(
                               'https://cdn.iconscout.com/icon/free/png-256/free-razorpay-1649771-1399875.png',
-                              errorBuilder: (context, error, stackTrace) =>
-                                  SizedBox(),
+                              errorBuilder: (context, error, stackTrace) => SizedBox(),
                             )),
                       ],
                     );
@@ -176,8 +175,7 @@ class CheckoutScreen extends StatelessWidget {
                               children: [
                                 TextSpan(
                                   text: "₹$totalPrice",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black),
+                                  style: TextStyle(fontSize: 16, color: Colors.black),
                                 ),
                               ],
                             ),
@@ -190,8 +188,7 @@ class CheckoutScreen extends StatelessWidget {
                                 child: TextButton(
                                   style: TextButton.styleFrom(
                                     shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
+                                        borderRadius: BorderRadius.circular(20)),
                                     primary: Colors.white,
                                     backgroundColor: kPrimaryColor,
                                   ),
@@ -220,9 +217,7 @@ class CheckoutScreen extends StatelessWidget {
     if (checkoutAddControl.address != null) {
       if (value == 1) {
         razorPayService.pay(
-            totalPrice: totalPrice,
-            address: checkoutAddControl.address!,
-            cartList: cartList);
+            totalPrice: totalPrice, address: checkoutAddControl.address!, cartList: cartList);
       } else {
         String date = DateTime.now().toString();
         OrderModel orderData = OrderModel(

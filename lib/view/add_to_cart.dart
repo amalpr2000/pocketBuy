@@ -3,19 +3,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:pocketbuy/controller/quantity_controller.dart';
+import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
 import 'package:pocketbuy/model/cart_model.dart';
 import 'package:pocketbuy/service/auth/cart.dart';
+import 'package:pocketbuy/utils/snackbar.dart';
 import 'package:pocketbuy/view/cart/cart_screen.dart';
 
 class AddToCartAlert extends StatelessWidget {
-  // required this.productId,
-
-  //  required this.price,
-  //  required this.quantity,
-  //  required this.name,
-  //   required this.imageLink,
-  //   required this.totalprice,
   final String productId;
   final String name;
   final String imageLink;
@@ -96,7 +91,6 @@ class AddToCartAlert extends StatelessWidget {
               ElevatedButton(
                   onPressed: () {
                     Get.back();
-                    // cartControllerObj.quantity.value = 1;
                   },
                   child: Text('Cancel')),
               ElevatedButton(
@@ -111,6 +105,10 @@ class AddToCartAlert extends StatelessWidget {
                         totalprice: quantity * cost);
                     CartService().addToCart(cartItem: cartItem);
                     Get.back();
+                    customSnackbar(
+                        title: 'Successfully Added',
+                        msg: 'Product added to cart',
+                        barColor: snackGreen);
                   },
                   child: Text('Continue'))
             ],
