@@ -99,15 +99,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   kHeight20,
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: const [
-                  //     Text(
-                  //       'Forget password?',
-                  //       style: TextStyle(color: kSecondaryColor),
-                  //     ),
-                  //   ],
-                  // ),
+                 
                   kHeight40,
                   SizedBox(
                       width: double.infinity,

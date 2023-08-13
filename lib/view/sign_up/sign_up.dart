@@ -131,13 +131,7 @@ class SignUpScreen extends StatelessWidget {
                           style: TextStyle(color: kwhite),
                         ))),
                 kHeight40,
-                // ClipRRect(
-                //   borderRadius: BorderRadius.circular(50),
-                //   child: Image.network(
-                //     'https://e7.pngegg.com/pngimages/114/607/png-clipart-g-suite-pearl-river-middle-school-google-software-suite-email-sign-up-button-text-logo.png',
-                //     width: 40,
-                //   ),
-                // ),
+               
                 kHeight40,
                 const Text(
                   "By signup your confirm that you agree \n        with our terms and conditions ",

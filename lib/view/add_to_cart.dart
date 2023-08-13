@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
+
 import 'package:get/get.dart';
 import 'package:pocketbuy/controller/quantity_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
@@ -8,7 +8,7 @@ import 'package:pocketbuy/core/constants.dart';
 import 'package:pocketbuy/model/cart_model.dart';
 import 'package:pocketbuy/service/auth/cart.dart';
 import 'package:pocketbuy/utils/snackbar.dart';
-import 'package:pocketbuy/view/cart/cart_screen.dart';
+
 
 class AddToCartAlert extends StatelessWidget {
   final String productId;

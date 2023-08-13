@@ -152,58 +152,7 @@ class SearchFound extends StatelessWidget {
                           '₹ ${searchText.searchList[index]['productPrice']}',
                           style: const TextStyle(color: kPrimaryColor),
                         ),
-                        // FutureBuilder(
-                        //     future: WishlistService().checkWishlist(
-                        //         productid:
-                        //             snapshot.data!.docs[index].id),
-                        //     builder: (context, snapshot1) {
-                        //       return GetBuilder<WishlistController>(
-                        //         builder: (controllerobj) => InkWell(
-                        //           onTap: () {
-                        //             if (snapshot1.data == true) {
-                        //               WishlistService()
-                        //                   .removeWishlist(
-                        //                       context: context,
-                        //                       productid: snapshot
-                        //                           .data!
-                        //                           .docs[index]
-                        //                           .id);
-                        //             } else {
-                        //               WishlistService()
-                        //                   .addToWishlist(
-                        //                       context: context,
-                        //                       productid: snapshot
-                        //                           .data!
-                        //                           .docs[index]
-                        //                           .id);
-                        //             }
-                        //             controllerobj.updateIcon(
-                        //                 isContain:
-                        //                     !snapshot1.data!);
-                        //             a = !snapshot1.data!;
-                        //           },
-                        //           child: Container(
-                        //               height: 20,
-                        //               width: 20,
-                        //               decoration: BoxDecoration(
-                        //                   color: Colors.grey[300],
-                        //                   borderRadius:
-                        //                       BorderRadius.circular(
-                        //                           50)),
-                        //               child: a
-                        //                   ? const Icon(
-                        //                       Icons
-                        //                           .favorite_rounded,
-                        //                       size: 15,
-                        //                     )
-                        //                   : const Icon(
-                        //                       Icons
-                        //                           .favorite_outline_rounded,
-                        //                       size: 15,
-                        //                     )),
-                        //         ),
-                        //       );
-                        //     })
+                        
                       ],
                     )
                   ],

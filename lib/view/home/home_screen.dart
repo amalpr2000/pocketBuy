@@ -4,11 +4,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pocketbuy/controller/cart_controller.dart';
+
 import 'package:pocketbuy/controller/wishlist_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
-import 'package:pocketbuy/service/auth/wishlist.dart';
+
 import 'package:pocketbuy/view/brand_page.dart';
 import 'package:pocketbuy/view/cart/cart_screen.dart';
 import 'package:pocketbuy/view/product_details.dart';

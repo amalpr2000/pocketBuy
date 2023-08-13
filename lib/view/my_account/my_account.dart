@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pocketbuy/core/colors.dart';
+
 import 'package:pocketbuy/core/constants.dart';
 import 'package:pocketbuy/service/auth/wishlist.dart';
 import 'package:pocketbuy/view/my_account/widgets/user_data_box.dart';

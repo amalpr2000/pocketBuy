@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pocketbuy/controller/cart_controller.dart';
@@ -6,22 +6,21 @@ import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
 import 'package:pocketbuy/utils/snackbar.dart';
 
-import 'package:pocketbuy/view/cart/widgets/cart_list_tile.dart';
+
 import 'package:pocketbuy/view/checkout/checkout_screen.dart';
 
-import '../../service/auth/wishlist.dart';
-// final cartControllerObj = CartController();
+
 
 class CartScreen extends StatelessWidget {
   CartScreen({super.key});
   final CartController cartObj = CartController();
   @override
   Widget build(BuildContext context) {
-    // cartControllerObj.getCartList();
+ 
     cartObj.getCartList();
 
     var displayHeight = MediaQuery.of(context).size.height;
-    // var displayWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,

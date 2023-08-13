@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pocketbuy/controller/cart_controller.dart';
+
 
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
-import 'package:pocketbuy/service/auth/cart.dart';
+
 
 class CartListTile extends StatelessWidget {
    CartListTile(
       {super.key, required this.productId, required this.quantity});
   final String productId;
   final int quantity;
-  // final cartObj=CartController();
+  
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(

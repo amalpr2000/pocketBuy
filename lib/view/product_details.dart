@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pocketbuy/controller/cart_controller.dart';
+
 import 'package:pocketbuy/controller/wishlist_controller.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
-import 'package:pocketbuy/model/cart_model.dart';
-import 'package:pocketbuy/service/auth/cart.dart';
-import 'package:pocketbuy/service/auth/wishlist.dart';
+
 import 'package:pocketbuy/view/add_to_cart.dart';
 import 'package:pocketbuy/view/cart/cart_screen.dart';
 import 'package:pocketbuy/view/home/home_screen.dart';
@@ -186,7 +184,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         width: double.infinity,
                                         height: 45,
                                         child: ElevatedButton(
-                                            // style: ButtonStyle(backgroundColor: Colors.orange),
+                                  
                                             onPressed: () {
                                               var data = snapshot.data!;
                                               showDialog(

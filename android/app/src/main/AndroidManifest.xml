@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.amalpr.pocketbuy">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="PocketBuy"
         android:name="${applicationName}"

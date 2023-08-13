@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 import 'package:pocketbuy/core/colors.dart';
 import 'package:pocketbuy/core/constants.dart';
 import 'package:pocketbuy/view/bottom_nav.dart';
-import 'package:pocketbuy/view/home/home_screen.dart';
-import 'package:pocketbuy/view/orders/orders_screen.dart';
+
 
 class OrderSuccess extends StatelessWidget {
   const OrderSuccess({super.key});
@@ -50,7 +49,7 @@ class OrderSuccess extends StatelessWidget {
                       width: double.infinity,
                       height: 45,
                       child: ElevatedButton(
-                          // style: ButtonStyle(backgroundColor: Colors.orange),
+                        
                           onPressed: () {
                             Get.offAll(() => BottomNavBarWidget());
                           },
