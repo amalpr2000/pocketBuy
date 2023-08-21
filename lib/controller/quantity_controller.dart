@@ -8,8 +8,9 @@ class QuantityController extends GetxController {
   }
 
   quantityDecrement() {
-    quantity--;
-
+    if (quantity > 1) {
+      quantity--;
+    }
     update();
   }
 }

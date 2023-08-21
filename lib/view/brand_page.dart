@@ -62,86 +62,100 @@ class BrandPage extends StatelessWidget {
               if (snapshot.data == null) {
                 return const Center(child: CircularProgressIndicator());
               }
-              return GridView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: snapshot.data!.docs.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                    mainAxisExtent: 180),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 5, right: 5),
-                    child: Material(
-                      elevation: 7,
-                      borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white,
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 125,
-                              width: 140,
+
+              return snapshot.data!.docs.isEmpty
+                  ? Center(
+                      child: Text('No brand Product available'),
+                    )
+                  : GridView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemCount: snapshot.data!.docs.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 20,
+                          mainAxisExtent: 180),
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 5, right: 5),
+                          child: Material(
+                            elevation: 7,
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
                               decoration: BoxDecoration(
-                                  color: Colors.amber,
-                                  borderRadius: BorderRadius.circular(20),
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image:
-                                          NetworkImage(snapshot.data!.docs[index]['productImg1']))),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text(snapshot.data!.docs[index]['productName']),
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  '₹ ${snapshot.data!.docs[index]['productPrice']}',
-                                  style: const TextStyle(color: kPrimaryColor),
-                                ),
-                                Spacer(),
-                                InkWell(
-                                  onTap: () {
-                                    if (wishListObj.wishlist
-                                        .contains(snapshot.data!.docs[index].id)) {
-                                      wishListObj.remove(productId: snapshot.data!.docs[index].id);
-                                    } else {
-                                      wishListObj.add(productId: snapshot.data!.docs[index].id);
-                                    }
-                                  },
-                                  child: GetBuilder<WishlistController>(
-                                    init: wishListObj,
-                                    builder: (controller) {
-                                      wishListObj = controller;
-                                      return Icon(
-                                        wishListObj.wishlist.contains(snapshot.data!.docs[index].id)
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        size: 28,
-                                        color: Colors.red,
-                                      );
-                                    },
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      height: 125,
+                                      width: 140,
+                                      decoration: BoxDecoration(
+                                          color: Colors.amber,
+                                          borderRadius: BorderRadius.circular(20),
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                  snapshot.data!.docs[index]['productImg1']))),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 14),
+                                    child: Text(snapshot.data!.docs[index]['productName']),
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(
+                                        '₹ ${snapshot.data!.docs[index]['productPrice']}',
+                                        style: const TextStyle(color: kPrimaryColor),
+                                      ),
+                                      Spacer(),
+                                      InkWell(
+                                        onTap: () {
+                                          if (wishListObj.wishlist
+                                              .contains(snapshot.data!.docs[index].id)) {
+                                            wishListObj.remove(
+                                                productId: snapshot.data!.docs[index].id);
+                                          } else {
+                                            wishListObj.add(
+                                                productId: snapshot.data!.docs[index].id);
+                                          }
+                                        },
+                                        child: GetBuilder<WishlistController>(
+                                          init: wishListObj,
+                                          builder: (controller) {
+                                            wishListObj = controller;
+                                            return Icon(
+                                              wishListObj.wishlist
+                                                      .contains(snapshot.data!.docs[index].id)
+                                                  ? Icons.favorite
+                                                  : Icons.favorite_border,
+                                              size: 28,
+                                              color: Colors.red,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
+                          ),
+                        );
+                      },
+                    );
             },
           ),
         ));

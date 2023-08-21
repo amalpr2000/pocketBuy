@@ -82,6 +82,7 @@ class OrdersScreen extends StatelessWidget {
                                         orderDetails: orderData, orderId: snapshot.data!.id)),
                                     title: Text(
                                       'Order id: ${snapshot.data!.id}',
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     subtitle: Text(orderData.orderStatus!,
                                         style: const TextStyle(color: kPrimaryColor)),
