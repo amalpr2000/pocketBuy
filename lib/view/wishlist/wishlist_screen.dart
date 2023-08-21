@@ -54,22 +54,17 @@ class WishlistScreen extends StatelessWidget {
             ],
           ),
           kHeight10,
-          controller.wishlist.isEmpty
-              ? SizedBox(
-                  height: displayHeight * .5,
-                  child: Center(child: Text('Wishlist is empty')),
-                )
-              : SizedBox(
-                  height: displayHeight * .6,
-                  child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        return WishlistTile(productId: controller.wishlist[index]);
-                      },
-                      separatorBuilder: (context, index) => SizedBox(
-                            height: 15,
-                          ),
-                      itemCount: controller.wishlist.length),
-                )
+          SizedBox(
+            height: displayHeight * .6,
+            child: ListView.separated(
+                itemBuilder: (context, index) {
+                  return WishlistTile(productId: controller.wishlist[index]);
+                },
+                separatorBuilder: (context, index) => SizedBox(
+                      height: 15,
+                    ),
+                itemCount: controller.wishlist.length),
+          )
         ],
       ),
     ));

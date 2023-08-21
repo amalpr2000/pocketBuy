@@ -47,14 +47,14 @@ class CartController extends GetxController {
   // cart product quantity decreasing
   productQtyDec({required int index, required BuildContext context}) {
     CartModel data = cartList[index];
-    if (data.quantity! > 1) {
-      data.quantity = data.quantity! - 1;
-      data.totalprice = data.totalprice! - data.price!;
-      totalCartPrice -= data.price!;
-      update();
-      CartService().updateCartItem(
-          productId: data.productId!, updateQty: data.quantity!, price: data.price!);
-    }
+
+    data.quantity = data.quantity! - 1;
+    data.totalprice = data.totalprice! - data.price!;
+    totalCartPrice -= data.price!;
+    update();
+    CartService()
+        .updateCartItem(productId: data.productId!, updateQty: data.quantity!, price: data.price!);
+
   }
 
   //deleting product from cart
@@ -65,6 +65,5 @@ class CartController extends GetxController {
     cartList.removeAt(index);
 
     update();
-    
   }
 }

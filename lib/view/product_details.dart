@@ -252,10 +252,3 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 }
 
-List productimages = [
-  'assets/images/14pro.jpg',
-  'assets/images/14pro1.jpg',
-  'assets/images/14pro2.jpg',
-  'assets/images/14pro3.jpg',
-  'assets/images/14pro4.jpg'
-];

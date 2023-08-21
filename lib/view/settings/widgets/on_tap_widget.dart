@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:share/share.dart';
 
 settingsOntap({required index, required BuildContext context}) {
   if (index == 2) {
@@ -94,8 +94,7 @@ By using the Application, you acknowledge that you have read this license, under
     );
   }
   if (index == 1) {
-    // Share.share(
-    //     'Check out this awesome app!\nhttps://play.google.com/store/apps/details?id=com.amalpr.pocketbuy');
+    
   }
   if (index == 0) {
     showDialog(
